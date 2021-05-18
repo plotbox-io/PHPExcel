@@ -1025,8 +1025,8 @@ class PHPExcel_Reader_Excel5 extends PHPExcel_Reader_Abstract implements PHPExce
                     }
 
                     // calculate the width and height of the shape
-                    [$startColumn, $startRow] = PHPExcel_Cell::coordinateFromString($spContainer->getStartCoordinates());
-                    [$endColumn, $endRow] = PHPExcel_Cell::coordinateFromString($spContainer->getEndCoordinates());
+                    list($startColumn, $startRow) = PHPExcel_Cell::coordinateFromString($spContainer->getStartCoordinates());
+                    list($endColumn, $endRow) = PHPExcel_Cell::coordinateFromString($spContainer->getEndCoordinates());
 
                     $startOffsetX = $spContainer->getStartOffsetX();
                     $startOffsetY = $spContainer->getStartOffsetY();
@@ -1101,7 +1101,7 @@ class PHPExcel_Reader_Excel5 extends PHPExcel_Reader_Abstract implements PHPExce
             // treat SHAREDFMLA records
             if ($this->version == self::XLS_BIFF8) {
                 foreach ($this->sharedFormulaParts as $cell => $baseCell) {
-                    [$column, $row] = PHPExcel_Cell::coordinateFromString($cell);
+                    list($column, $row) = PHPExcel_Cell::coordinateFromString($cell);
                     if (($this->getReadFilter() !== null) && $this->getReadFilter()->readCell($column, $row, $this->phpSheet->getTitle())) {
                         $formula = $this->getFormulaFromStructure($this->sharedFormulas[$baseCell], $cell);
                         $this->phpSheet->getCell($cell)->setValueExplicit('=' . $formula, PHPExcel_Cell_DataType::TYPE_FORMULA);
@@ -1179,8 +1179,8 @@ class PHPExcel_Reader_Excel5 extends PHPExcel_Reader_Abstract implements PHPExce
 
                                     $coordinateStrings = explode(':', $extractedRange);
                                     if (count($coordinateStrings) == 2) {
-                                        [$firstColumn, $firstRow] = PHPExcel_Cell::coordinateFromString($coordinateStrings[0]);
-                                        [$lastColumn, $lastRow] = PHPExcel_Cell::coordinateFromString($coordinateStrings[1]);
+                                        list($firstColumn, $firstRow) = PHPExcel_Cell::coordinateFromString($coordinateStrings[0]);
+                                        list($lastColumn, $lastRow) = PHPExcel_Cell::coordinateFromString($coordinateStrings[1]);
 
                                         if ($firstColumn == 'A' and $lastColumn == 'IV') {
                                             // then we have repeating rows
@@ -6836,7 +6836,7 @@ class PHPExcel_Reader_Excel5 extends PHPExcel_Reader_Abstract implements PHPExce
      */
     private function readBIFF8CellAddressB($cellAddressStructure, $baseCell = 'A1')
     {
-        [$baseCol, $baseRow] = PHPExcel_Cell::coordinateFromString($baseCell);
+        list($baseCol, $baseRow) = PHPExcel_Cell::coordinateFromString($baseCell);
         $baseCol = PHPExcel_Cell::columnIndexFromString($baseCol) - 1;
 
         // offset: 0; size: 2; index to row (0... 65535) (or offset (-32768... 32767))
@@ -7010,7 +7010,7 @@ class PHPExcel_Reader_Excel5 extends PHPExcel_Reader_Abstract implements PHPExce
      */
     private function readBIFF8CellRangeAddressB($subData, $baseCell = 'A1')
     {
-        [$baseCol, $baseRow] = PHPExcel_Cell::coordinateFromString($baseCell);
+        list($baseCol, $baseRow) = PHPExcel_Cell::coordinateFromString($baseCell);
         $baseCol = PHPExcel_Cell::columnIndexFromString($baseCol) - 1;
 
         // TODO: if cell range is just a single cell, should this funciton

@@ -2310,7 +2310,7 @@ class PHPExcel_Calculation
         //    Identify our locale and language
         $language = $locale = strtolower($locale);
         if (strpos($locale, '_') !== false) {
-            [$language] = explode('_', $locale);
+            list($language) = explode('_', $locale);
         }
 
         if (count(self::$validLocaleLanguages) == 1) {
@@ -2336,9 +2336,9 @@ class PHPExcel_Calculation
                 //    Retrieve the list of locale or language specific function names
                 $localeFunctions = file($functionNamesFile, FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES);
                 foreach ($localeFunctions as $localeFunction) {
-                    [$localeFunction] = explode('##', $localeFunction);    //    Strip out comments
+                    list($localeFunction) = explode('##', $localeFunction);    //    Strip out comments
                     if (strpos($localeFunction, '=') !== false) {
-                        [$fName, $lfName] = explode('=', $localeFunction);
+                        list($fName, $lfName) = explode('=', $localeFunction);
                         $fName = trim($fName);
                         $lfName = trim($lfName);
                         if ((isset(self::$PHPExcelFunctions[$fName])) && ($lfName != '') && ($fName != $lfName)) {
@@ -2361,9 +2361,9 @@ class PHPExcel_Calculation
                 if (file_exists($configFile)) {
                     $localeSettings = file($configFile, FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES);
                     foreach ($localeSettings as $localeSetting) {
-                        [$localeSetting] = explode('##', $localeSetting);    //    Strip out comments
+                        list($localeSetting) = explode('##', $localeSetting);    //    Strip out comments
                         if (strpos($localeSetting, '=') !== false) {
-                            [$settingName, $settingValue] = explode('=', $localeSetting);
+                            list($settingName, $settingValue) = explode('=', $localeSetting);
                             $settingName = strtoupper(trim($settingName));
                             switch ($settingName) {
                                 case 'ARGUMENTSEPARATOR':
@@ -2827,17 +2827,17 @@ class PHPExcel_Calculation
         //    Examine each of the two operands, and turn them into an array if they aren't one already
         //    Note that this function should only be called if one or both of the operand is already an array
         if (!is_array($operand1)) {
-            [$matrixRows, $matrixColumns] = self::getMatrixDimensions($operand2);
+            list($matrixRows, $matrixColumns) = self::getMatrixDimensions($operand2);
             $operand1 = array_fill(0, $matrixRows, array_fill(0, $matrixColumns, $operand1));
             $resize = 0;
         } elseif (!is_array($operand2)) {
-            [$matrixRows, $matrixColumns] = self::getMatrixDimensions($operand1);
+            list($matrixRows, $matrixColumns) = self::getMatrixDimensions($operand1);
             $operand2 = array_fill(0, $matrixRows, array_fill(0, $matrixColumns, $operand2));
             $resize = 0;
         }
 
-        [$matrix1Rows, $matrix1Columns] = self::getMatrixDimensions($operand1);
-        [$matrix2Rows, $matrix2Columns] = self::getMatrixDimensions($operand2);
+        list($matrix1Rows, $matrix1Columns) = self::getMatrixDimensions($operand1);
+        list($matrix2Rows, $matrix2Columns) = self::getMatrixDimensions($operand2);
         if (($matrix1Rows == $matrix2Columns) && ($matrix2Rows == $matrix1Columns)) {
             $resize = 1;
         }
@@ -3371,14 +3371,14 @@ class PHPExcel_Calculation
                         $startRowColRef = $output[count($output)-1]['value'];
                         $rangeWS1 = '';
                         if (strpos('!', $startRowColRef) !== false) {
-                            [$rangeWS1, $startRowColRef] = explode('!', $startRowColRef);
+                            list($rangeWS1, $startRowColRef) = explode('!', $startRowColRef);
                         }
                         if ($rangeWS1 != '') {
                             $rangeWS1 .= '!';
                         }
                         $rangeWS2 = $rangeWS1;
                         if (strpos('!', $val) !== false) {
-                            [$rangeWS2, $val] = explode('!', $val);
+                            list($rangeWS2, $val) = explode('!', $val);
                         }
                         if ($rangeWS2 != '') {
                             $rangeWS2 .= '!';
@@ -3559,12 +3559,12 @@ class PHPExcel_Calculation
                     case ':':            //    Range
                         $sheet1 = $sheet2 = '';
                         if (strpos($operand1Data['reference'], '!') !== false) {
-                            [$sheet1, $operand1Data['reference']] = explode('!', $operand1Data['reference']);
+                            list($sheet1, $operand1Data['reference']) = explode('!', $operand1Data['reference']);
                         } else {
                             $sheet1 = ($pCellParent !== null) ? $pCellWorksheet->getTitle() : '';
                         }
                         if (strpos($operand2Data['reference'], '!') !== false) {
-                            [$sheet2, $operand2Data['reference']] = explode('!', $operand2Data['reference']);
+                            list($sheet2, $operand2Data['reference']) = explode('!', $operand2Data['reference']);
                         } else {
                             $sheet2 = $sheet1;
                         }
@@ -4198,7 +4198,7 @@ class PHPExcel_Calculation
 //            echo 'Range reference is '.$pRange.PHP_EOL;
             if (strpos($pRange, '!') !== false) {
 //                echo '$pRange reference includes sheet reference', PHP_EOL;
-                [$pSheetName, $pRange] = PHPExcel_Worksheet::extractSheetTitle($pRange, true);
+                list($pSheetName, $pRange) = PHPExcel_Worksheet::extractSheetTitle($pRange, true);
 //                echo 'New sheet name is '.$pSheetName, PHP_EOL;
 //                echo 'Adjusted Range reference is '.$pRange, PHP_EOL;
                 $pSheet = $this->workbook->getSheetByName($pSheetName);
@@ -4256,7 +4256,7 @@ class PHPExcel_Calculation
 //            echo 'Range reference is '.$pRange.'<br />';
             if (strpos($pRange, '!') !== false) {
 //                echo '$pRange reference includes sheet reference', PHP_EOL;
-                [$pSheetName, $pRange] = PHPExcel_Worksheet::extractSheetTitle($pRange, true);
+                list($pSheetName, $pRange) = PHPExcel_Worksheet::extractSheetTitle($pRange, true);
 //                echo 'New sheet name is '.$pSheetName, PHP_EOL;
 //                echo 'Adjusted Range reference is '.$pRange, PHP_EOL;
                 $pSheet = $this->workbook->getSheetByName($pSheetName);
@@ -4293,7 +4293,7 @@ class PHPExcel_Calculation
 //            var_dump($aReferences);
             if (!isset($aReferences[1])) {
                 //    Single cell (or single column or row) in range
-                [$currentCol, $currentRow] = PHPExcel_Cell::coordinateFromString($aReferences[0]);
+                list($currentCol, $currentRow) = PHPExcel_Cell::coordinateFromString($aReferences[0]);
                 $cellValue = null;
                 if ($pSheet->cellExists($aReferences[0])) {
                     $returnValue[$currentRow][$currentCol] = $pSheet->getCell($aReferences[0])->getCalculatedValue($resetLog);
@@ -4304,7 +4304,7 @@ class PHPExcel_Calculation
                 // Extract cell data for all cells in the range
                 foreach ($aReferences as $reference) {
                     // Extract range
-                    [$currentCol, $currentRow] = PHPExcel_Cell::coordinateFromString($reference);
+                    list($currentCol, $currentRow) = PHPExcel_Cell::coordinateFromString($reference);
 //                    echo 'NAMED RANGE: $currentCol='.$currentCol.' $currentRow='.$currentRow.'<br />';
                     $cellValue = null;
                     if ($pSheet->cellExists($reference)) {

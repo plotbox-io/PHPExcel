@@ -328,7 +328,7 @@ class PHPExcel_Calculation_Functions
             return '=' . $condition;
         } else {
             preg_match('/([<>=]+)(.*)/', $condition, $matches);
-            [, $operator, $operand] = $matches;
+            list(, $operator, $operand) = $matches;
 
             if (!is_numeric($operand)) {
                 $operand = str_replace('"', '""', $operand);

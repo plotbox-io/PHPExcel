@@ -379,7 +379,7 @@ class PHPExcel_Reader_SYLK extends PHPExcel_Reader_Abstract implements PHPExcel_
                             $formatStyle = $rowDatum;
                             break;
                         case 'W':
-                            [$startCol, $endCol, $columnWidth] = explode(' ', substr($rowDatum, 1));
+                            list($startCol, $endCol, $columnWidth) = explode(' ', substr($rowDatum, 1));
                             break;
                         case 'S':
                             $styleSettings = substr($rowDatum, 1);
